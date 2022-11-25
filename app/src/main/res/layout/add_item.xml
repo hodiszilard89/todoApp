@@ -1,68 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_margin="15dp">
+
     <LinearLayout
-        android:background="@drawable/shape_background"
-        android:orientation = "vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:background="@drawable/shape_background"
         android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp"
 
         >
-        <TextView
 
-            android:padding="10dp"
-            android:textSize="19sp"
-            android:textColor="@color/white"
-            android:background="@color/purple_500"
-            android:layout_margin="15dp"
-            android:layout_gravity="center"
-            android:text = "Add the Todo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <TextView-->
+<!--            android:visibility="invisible"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:background="@color/purple_500"-->
+<!--            android:padding="10dp"-->
+<!--            android:text="Todo beállítás"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="19sp" />-->
 
         <TextView
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black"
             android:id="@+id/tv_mikor"
-            android:textStyle="bold"
-
-            android:hint = "Mikor"
-            android:textSize="20sp"
-            android:layout_margin="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+
+            android:hint="Mikor (koppints)"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_mit"
-            android:textColorHint="@color/gray"
-            android:hint = "Feladat"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_margin="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Feladat"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_desc"
-            android:textColorHint="@color/gray"
-            android:hint = "Leírás"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_margin="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Leírás"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

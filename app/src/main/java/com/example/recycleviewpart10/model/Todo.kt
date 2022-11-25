@@ -1,9 +1,39 @@
 package com.example.recycleviewpart10.model
 
-class Todo (
-    var time:String,
-    var titel:String,
-    var desc:String
-        ) {
+import android.os.Parcel
+import android.os.Parcelable
+
+class Todo(
+    var time: String?,
+    var title:String?,
+    var desc:String?
+        ) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
     constructor() : this("","","")
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(time)
+        parcel.writeString(title)
+        parcel.writeString(desc)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Todo> {
+        override fun createFromParcel(parcel: Parcel): Todo {
+            return Todo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Todo?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

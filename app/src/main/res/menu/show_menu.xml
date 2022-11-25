@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit"
         android:title="Szerkeztés"
         android:icon="@drawable/edit"
+
         />
     <item
+        android:icon="@drawable/delete"
         android:id="@+id/delete"
         android:title="Törlés"
-        android:icon="@drawable/delete"
+
+
         />
 </menu>
