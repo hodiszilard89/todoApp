@@ -2,6 +2,8 @@ package com.example.recycleviewpart10
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -11,8 +13,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recycleviewpart10.adapter.MyAdapter
 import com.example.recycleviewpart10.model.Todo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
@@ -88,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext,"Minden sor kitöltlse kötelező",Toast.LENGTH_LONG).show()
                     }
                     else{
-                        mytodo = Todo(todomikor, todomit, todoleiras)
+                        mytodo = Todo(false,todomikor, todomit, todoleiras)
                         todos.add(mytodo)
                         kilep=false;
                         }
@@ -112,9 +117,11 @@ class MainActivity : AppCompatActivity() {
 
             try
             {
+                json.put("isCheck",it.isCheck)
                 json.put("time",it.time)
                 json.put("title",it.title)
                 json.put("desc",it.desc)
+                //json object stringbe
                 jsonFile += json.toString()
              }
             catch (e: JSONException) {
@@ -126,16 +133,18 @@ class MainActivity : AppCompatActivity() {
 
         }
         jsonFile+=" ]"
-        Log.w("MainActivity",jsonFile)
+        //Log.w("MainActivity",jsonFile)
         try {
             fileOutputStream = openFileOutput(file, Context.MODE_PRIVATE)
             fileOutputStream.write(jsonFile.toByteArray())
         } catch (e: FileNotFoundException){
             e.printStackTrace()
+
         }catch (e: NumberFormatException){
             e.printStackTrace()
         }catch (e: IOException){
             e.printStackTrace()
+
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -144,11 +153,30 @@ class MainActivity : AppCompatActivity() {
     private fun readFromJson():ArrayList<Todo> {
         val filename = "todo.json"
         val todosF = ArrayList<Todo>()
-
+        val path = filesDir
         if (filename.trim() != "") {
+
             var fileInputStream: FileInputStream? = null
 
-            fileInputStream = openFileInput(filename)
+            try {
+                //KAPCSOLÓDÁS A LÉTEZÓ JSONHOZ
+                fileInputStream = openFileInput(filename)
+            } catch (e: FileNotFoundException){
+                e.printStackTrace()
+                //HA NEM LÉTEZIK A FILE LÉTREHOZZA
+                val file = File(path,filename)
+                file.createNewFile()
+                fileInputStream = openFileInput(filename)
+                val fos = openFileOutput(filename, Context.MODE_PRIVATE)
+                fos.write("[]".toByteArray())
+            }catch (e: NumberFormatException){
+                e.printStackTrace()
+            }catch (e: IOException){
+                e.printStackTrace()
+
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
 
             val inputStreamReader= InputStreamReader(fileInputStream)
             val bufferedReader= BufferedReader(inputStreamReader)
@@ -162,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 } != null) {
                 stringBuilder.append(text)
             }
-            Log.w("MainActivity", stringBuilder.toString())
+            //Log.w("MainActivity", stringBuilder.toString())
 
             val jsonarr = JSONArray(stringBuilder.toString())
 
@@ -170,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                 val jsonobj = jsonarr.getJSONObject(i)
                 val mytodo = Todo()
 
-
+                mytodo.isCheck=jsonobj.getBoolean("isCheck")
                 mytodo.time = jsonobj.getString("time")
                 mytodo.title = jsonobj.getString("title")
                 mytodo.desc = jsonobj.getString("desc")
@@ -181,6 +209,7 @@ class MainActivity : AppCompatActivity() {
         }
         return todosF
     }
+
 
     private fun todoSorba(array: ArrayList<Todo>){
         var t:Todo
@@ -213,21 +242,20 @@ class MainActivity : AppCompatActivity() {
         }
         i+=list.get(0).toInt()*60
         i+=list.get(1).toInt()
-        //Log.w("MainActivity",time+"  "+i.toString())
+
         return i;
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
+
         todoSorba(todos)
         outState.putParcelableArrayList("todos",todos)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        todoSorba(todos)
-        Log.w("MainActivity",todos.toString())
-      //  todos= savedInstanceState.getParcelableArrayList("todos",)
+
     }
 
     override fun onPause() {
@@ -248,4 +276,6 @@ class MainActivity : AppCompatActivity() {
         writeToJson()
     }
 }
+
+
 

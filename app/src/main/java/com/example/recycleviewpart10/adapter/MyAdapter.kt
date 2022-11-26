@@ -1,19 +1,23 @@
-package com.example.recycleviewpart10
+package com.example.recycleviewpart10.adapter
 
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.pm.PackageManager.Property
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recycleviewpart10.MainActivity
+import com.example.recycleviewpart10.R
 import com.example.recycleviewpart10.model.Todo
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,8 +30,10 @@ class MyAdapter(val c:Context, private val data:ArrayList<Todo>):RecyclerView.Ad
         private var tv_title = view.findViewById<TextView>(R.id.tv_Title)
         private var tv_desc = view.findViewById<TextView>(R.id.tv_desc)
         private val todoItem = view.findViewById<ConstraintLayout>(R.id.todoItem)
+        private val doneImage = view.findViewById<ImageView>(R.id.imageView)
 
        fun bind(todo:Todo, index:Int) {
+           doneImage.isVisible= todo.isCheck
            tv_mikor.text=todo.time
            tv_title.text=todo.title
            tv_desc.text=todo.desc
@@ -41,10 +47,20 @@ class MyAdapter(val c:Context, private val data:ArrayList<Todo>):RecyclerView.Ad
        private fun popupMenu(it: View?) {
             val selectedTodo = data[absoluteAdapterPosition]
             val popupMenu = PopupMenu(c, view)
+
             popupMenu.inflate(R.menu.show_menu)
             popupMenu.setOnMenuItemClickListener {
                 when(it.itemId) {
+                    R.id.done -> {
+                        selectedTodo.isCheck = !selectedTodo.isCheck
+                        //doneImage.isVisible = !doneImage.isVisible
+                        notifyDataSetChanged()
+                        Log.w("MainActivity",doneImage.isVisible.toString())
+                        true
+                    }
                     R.id.edit -> {
+
+                        //it.setIcon()
                         val v = LayoutInflater.from(c).inflate(R.layout.add_item,null)
                         val time = v.findViewById<TextView>(R.id.tv_mikor)
                         val title = v.findViewById<EditText>(R.id.et_mit)

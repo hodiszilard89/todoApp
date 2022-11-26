@@ -3,21 +3,25 @@ package com.example.recycleviewpart10.model
 import android.os.Parcel
 import android.os.Parcelable
 
-class Todo(
+class Todo (
+    var isCheck:Boolean = false,
     var time: String?,
     var title:String?,
     var desc:String?
-        ) : Parcelable {
+        ):Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readValue(Boolean::class.java.classLoader) as Boolean,
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
     }
 
-    constructor() : this("","","")
+    constructor() : this(false,"","","")
+
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(isCheck)
         parcel.writeString(time)
         parcel.writeString(title)
         parcel.writeString(desc)
@@ -37,3 +41,4 @@ class Todo(
         }
     }
 }
+
